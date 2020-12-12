@@ -85,7 +85,7 @@ def writefile():
             file.write(f"{i}={str(rnd(10))}\n")
         for i in punctuation:
             file.write(f"{i}={str(rnd(10))}\n")
-        file.write(f" = {str(rnd(10))}\n")
+        file.write(f"={str(rnd(10))}\n")
 
 
 try:
