@@ -80,17 +80,12 @@ def writefile():
     punctuation = string.punctuation
     with open('key.txt', 'w') as file:
         for i in alphabets:
-            entry = i + "=" + str(rnd(10)) + "\n"
-            file.write(entry)
+            file.write(f"{i}={str(rnd(10))}\n")
         for i in numbers:
-            entry = i + "=" + str(rnd(10)) + "\n"
-            file.write(entry)
+            file.write(f"{i}={str(rnd(10))}\n")
         for i in punctuation:
-            entry = i + "=" + str(rnd(10)) + "\n"
-            file.write(entry)
-
-        entry = " " + "=" + str(rnd(10)) + "\n"
-        file.write(entry)
+            file.write(f"{i}={str(rnd(10))}\n")
+        file.write(f" = {str(rnd(10))}\n")
 
 
 try:
@@ -101,11 +96,11 @@ try:
         else:
             pass
 except IOError:
-    f = open("key.txt", "x")
+    file = open("key.txt", "x")
     writefile()
     print("New Key Created")
-key = input("Would you like to encrypt or decrypt a phrase (no spaces)? ")
 
+key = input("Would you like to encrypt or decrypt a phrase (no spaces)? ")
 while True:
 
     if key.lower() == "encrypt":
@@ -123,4 +118,3 @@ while True:
     else:
         print("Invalid response")
         break
- 
