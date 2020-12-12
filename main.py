@@ -14,8 +14,8 @@ class Encryption:
         y = list(map(str, self.phrase))
         encrypted_message = ""
         a = []
-        with open("key.txt", 'r') as file:
-            lines = file.readlines()
+        with open("key.txt", 'r') as FILE:
+            lines = FILE.readlines()
             for line in lines:
                 if line.startswith("=="):
                     x = line.split("=")
@@ -46,8 +46,8 @@ class Decryption:
         x = x[0].split(" ")
         decrypted_message = ""
         a = []
-        with open("key.txt", 'r') as file:
-            lines = file.readlines()
+        with open("key.txt", 'r') as FILE:
+            lines = FILE.readlines()
             for line in lines:
                 if line.startswith("=="):
                     k = line.split("=")
@@ -65,7 +65,7 @@ class Decryption:
                     decrypted_letter = element[0]
                     decrypted_message += decrypted_letter
         if len(decrypted_message) == 0:
-            raise Exception("invalid decryped message.")
+            raise Exception("invalid decrypted message.")
         else:
             return decrypted_message
 
@@ -78,14 +78,14 @@ def writefile():
     alphabets = string.ascii_letters
     numbers = string.digits
     punctuation = string.punctuation
-    with open('key.txt', 'w') as file:
+    with open('key.txt', 'w') as FILE:
         for i in alphabets:
-            file.write(f"{i}={str(rnd(10))}\n")
+            FILE.write(f"{i}={str(rnd(10))}\n")
         for i in numbers:
-            file.write(f"{i}={str(rnd(10))}\n")
+            FILE.write(f"{i}={str(rnd(10))}\n")
         for i in punctuation:
-            file.write(f"{i}={str(rnd(10))}\n")
-        file.write(f"={str(rnd(10))}\n")
+            FILE.write(f"{i}={str(rnd(10))}\n")
+        FILE.write(f"={str(rnd(10))}\n")
 
 
 try:
