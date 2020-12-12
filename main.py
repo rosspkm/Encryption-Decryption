@@ -1,4 +1,4 @@
-# Simple encryption/decryption system
+# Simple encryption/decryption system that generates its own key to encrypt/decrypt with
 
 import string
 import random
