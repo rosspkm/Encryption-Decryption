@@ -3,7 +3,6 @@
 import string
 import random
 import os
-from sys import path
 
 
 class Encryption:
@@ -12,17 +11,27 @@ class Encryption:
         self.phrase = obj
 
     def encrypt(self):
-        y = list(self.phrase)
+        y = list(map(str, self.phrase))
         encrypted_message = ""
-        for i in y:
-            with open("codex.txt", 'r') as file:
-                lines = file.readlines()
-                for line in lines:
-                    x = line.split(" ")
+        a = []
+        with open("key.txt", 'r') as file:
+            lines = file.readlines()
+            for line in lines:
+                if line.startswith("=="):
+                    x = line.split("=")
                     x = [s.replace('\n', '') for s in x]
-                    if i == x[0]:
-                        encoded_letter = x[2]
-                        encrypted_message += encoded_letter
+                    x[0] = "="
+                    x.pop(1)
+                    a.append(x)
+                else:
+                    x = line.split("=")
+                    x = [s.replace('\n', '') for s in x]
+                    a.append(x)
+        for i in y:
+            for x in a:
+                if i == x[0]:
+                    encoded_letter = x[1]
+                    encrypted_message += encoded_letter
         return encrypted_message
 
 
@@ -36,18 +45,27 @@ class Decryption:
         x = [' '.join(self.phrase[i:i + self.length] for i in range(0, len(self.phrase), self.length))]
         x = x[0].split(" ")
         decrypted_message = ""
-
-        for element in x:
-            with open('codex.txt', 'r') as file:
-                lines = file.readlines()
-                for line in lines:
-                    x = line.split(" ")
-                    x = [s.replace('\n', '') for s in x]
-                    if element == x[2]:
-                        decrypted_letter = x[0]
-                        decrypted_message += decrypted_letter
+        a = []
+        with open("key.txt", 'r') as file:
+            lines = file.readlines()
+            for line in lines:
+                if line.startswith("=="):
+                    k = line.split("=")
+                    k = [s.replace('\n', '') for s in k]
+                    k[0] = "="
+                    k.pop(1)
+                    a.append(k)
+                else:
+                    k = line.split("=")
+                    k = [s.replace('\n', '') for s in k]
+                    a.append(k)
+        for i in x:
+            for element in a:
+                if i == element[1]:
+                    decrypted_letter = element[0]
+                    decrypted_message += decrypted_letter
         if len(decrypted_message) == 0:
-            raise Exception("invalid encryption message.")
+            raise Exception("invalid decryped message.")
         else:
             return decrypted_message
 
@@ -59,28 +77,33 @@ def rnd(x):
 def writefile():
     alphabets = string.ascii_letters
     numbers = string.digits
-    punct = string.punctuation
-    with open('codex.txt', 'w') as file:
+    punctuation = string.punctuation
+    with open('key.txt', 'w') as file:
         for i in alphabets:
-            entry = i + " = " + str(rnd(10)) + "\n"
+            entry = i + "=" + str(rnd(10)) + "\n"
             file.write(entry)
         for i in numbers:
-            entry = i + " = " + str(rnd(10)) + "\n"
+            entry = i + "=" + str(rnd(10)) + "\n"
             file.write(entry)
-        for i in punct:
-            entry = i + " = " + str(rnd(10)) + "\n"
+        for i in punctuation:
+            entry = i + "=" + str(rnd(10)) + "\n"
             file.write(entry)
+
+        entry = " " + "=" + str(rnd(10)) + "\n"
+        file.write(entry)
 
 
 try:
-    with open('codex.txt') as f:
-        if os.stat("codex.txt").st_size == 0:
+    with open('key.txt') as f:
+        if os.stat("key.txt").st_size == 0:
             writefile()
+            print("New Key Created")
         else:
             pass
 except IOError:
-    f = open("codex.txt", "x")
+    f = open("key.txt", "x")
     writefile()
+    print("New Key Created")
 key = input("Would you like to encrypt or decrypt a phrase (no spaces)? ")
 
 while True:
@@ -100,3 +123,4 @@ while True:
     else:
         print("Invalid response")
         break
+ 
